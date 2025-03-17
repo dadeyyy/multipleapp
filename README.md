@@ -26,7 +26,7 @@
 - Add edit delete food
 - Review the food through a comment
 - CRUD comments
-- Sort by name and date upload
+- Sort by name and date upload_date
 
 ## Pokémon Review App
 
