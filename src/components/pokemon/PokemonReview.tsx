@@ -19,7 +19,7 @@ export default function PokemonReview({
   user_id,
   pokemon_name,
 }: {
-  comments: PokemonCommentType[];
+  comments: any;
   user_id: string;
   pokemon_name: string;
 }) {
@@ -48,7 +48,7 @@ export default function PokemonReview({
       <AddPokemonReview name={pokemon_name} user_id={user_id} />
 
       <ul className="flex flex-col gap-5">
-        {comments?.map((c) => (
+        {comments?.map((c:any) => (
           <li key={c.id} className="border flex items-center justify-between px-3 py-2 rounded-lg">
             {editingCommentId === c.id ? (
               <input

@@ -15,7 +15,7 @@ export type CommentType = {
 };
 
 export type FoodReviewType = {
-  comments?: CommentType[];
+  comments?: any;
   post_id: string;
   user_id: string;
   image_id: string;
@@ -47,7 +47,7 @@ export default function FoodReview({ comments, post_id, user_id, image_id }: Foo
       <AddReview post_id={post_id} user_id={user_id} image_id={image_id} />
 
       <ul className="flex flex-col gap-5">
-        {comments?.map((c) => (
+        {comments?.map((c: any) => (
           <li key={c.id} className="border flex items-center justify-between px-3 py-2 rounded-lg">
             {editingCommentId === c.id ? (
               <input

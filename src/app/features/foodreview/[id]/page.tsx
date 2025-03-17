@@ -16,7 +16,7 @@ async function fetchSelectedFood(id: string, supabase: SupabaseClient<any, 'publ
 async function fetchComments(id: string, supabase: SupabaseClient<any, 'public', any>) {
   const { data, error } = await supabase
     .from('comments')
-    .select(`id, post_id, comment, created_at, user_id, users(email)`)
+    .select(`id, post_id, comment, created_at, user_id, users:users(email)`)
     .eq('image_id', id)
     .order('created_at', { ascending: false });
 
@@ -26,7 +26,7 @@ async function fetchComments(id: string, supabase: SupabaseClient<any, 'public',
   }
   if (!data) return [];
 
-  return data;
+  return data as any;
 }
 
 export default async function FoodCommentPage({ params }: { params: Promise<{ id: string }> }) {
