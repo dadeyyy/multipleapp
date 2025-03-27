@@ -24,8 +24,15 @@ async function getUserTodos(supabase: SupabaseClient<any, 'public', any>, id: st
   return todoData;
 }
 
-export default async function TodoPage() {
+export default async function TodoPage(props: {
+  searchParams?: Promise<{
+    priority?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.priority || 'low';
   const supabase = await createClient();
+
   //Get currentUser
   const { data, error } = await supabase.auth.getUser();
   if (error || !data?.user) {
@@ -35,7 +42,7 @@ export default async function TodoPage() {
 
   return (
     <div className="flex  gap-8 p-6">
-      <TaskForm user_id={data.user.id} todos={todoData} />
+      <TaskForm priority={query} user_id={data.user.id} todos={todoData} />
     </div>
   );
 }

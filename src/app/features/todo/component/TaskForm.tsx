@@ -7,8 +7,21 @@ import { createTodo } from '@/actions/TodoActions/createtodo';
 import { deleteTodo } from '@/actions/TodoActions/deletetodo';
 import { useTaskStatus } from '@/hooks/useTaskStatus';
 import TaskRow from './TaskRow';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
-export default function TaskForm({ todos, user_id }: { todos: todoDataTypes[]; user_id: string }) {
+export default function TaskForm({
+  todos,
+  user_id,
+  priority,
+}: {
+  todos: todoDataTypes[];
+  user_id: string;
+  priority: string;
+}) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   const { handleCheckboxClick, status, setStatus } = useTaskStatus(todos);
   const [showEditModal, setShowEditModal] = useState<{ show: boolean; data: todoDataTypes | null }>({
     show: false,
@@ -48,6 +61,17 @@ export default function TaskForm({ todos, user_id }: { todos: todoDataTypes[]; u
       show: true,
       data: data,
     });
+  };
+
+  const handleChangePriority = (val: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (val) {
+      params.set('priority', val);
+    } else {
+      params.delete('priority');
+    }
+
+    replace(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -109,6 +133,8 @@ export default function TaskForm({ todos, user_id }: { todos: todoDataTypes[]; u
             id="priority"
             className="w-full border-2 border-gray-200 rounded-lg px-4 py-3 text-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all outline-none appearance-none bg-white"
             name="priority"
+            onChange={(e) => handleChangePriority(e.target.value)}
+            defaultValue={searchParams.get('priority')?.toString()}
           >
             <option value="low">LOW</option>
             <option value="medium">MEDIUM</option>
